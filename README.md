@@ -1,2 +1,2 @@
 # tabuada
-Tabuada do MIguek
+Tabuada do Miguel Tsukahara
