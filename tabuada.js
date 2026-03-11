@@ -83,15 +83,15 @@ const atualizarStatus = () => {
 const darDica = () => {
     if (acertos >= 5) {
         acertos -= 5;
-        // repeat the first factor as many times as the second factor
+        // repeat the second factor as many times as the first factor (inverted)
         if (perguntaAtual && perguntaAtual.texto) {
             const parts = perguntaAtual.texto.split(/[×x]/).map(s => s.trim());
             if (parts.length === 2) {
                 const a = parseInt(parts[0], 10);
                 const b = parseInt(parts[1], 10);
                 if (!isNaN(a) && !isNaN(b)) {
-                    const times = b;
-                    const repeat = Array(times).fill(a).join(' + ');
+                    const times = a;
+                    const repeat = Array(times).fill(b).join(' + ');
                     document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${repeat}`;
                 } else {
                     document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
