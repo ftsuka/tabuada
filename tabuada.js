@@ -83,28 +83,12 @@ const atualizarStatus = () => {
 const darDica = () => {
     if (acertos >= 5) {
         acertos -= 5;
-        // parse factors from perguntaAtual.texto, which uses "×" or "x"
-        let parts = perguntaAtual.texto.split(/[×x]/).map(s => s.trim());
-        let dicaTexto;
-        if (parts.length === 2) {
-            const a = parseInt(parts[0], 10);
-            const b = parseInt(parts[1], 10);
-            if (!isNaN(a) && !isNaN(b)) {
-                // special rule: when one factor is 1, show the other number + 0
-                if (a === 1) {
-                    dicaTexto = `${b} + 0`;
-                } else if (b === 1) {
-                    dicaTexto = `${a} + 0`;
-                } else {
-                    dicaTexto = `${a} + ${b}`;
-                }
-            } else {
-                dicaTexto = 'não disponível';
-            }
+        // simply reveal the correct result as the "hint" so it's never wrong
+        if (perguntaAtual && typeof perguntaAtual.resposta === 'number') {
+            document.getElementById('resultado-tabuada').textContent = `💡 Dica: a resposta é ${perguntaAtual.resposta}`;
         } else {
-            dicaTexto = 'não disponível';
+            document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
         }
-        document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${dicaTexto}`;
         document.getElementById('resultado-tabuada').style.color = '#2980b9';
         atualizarStatus();
     } else {
