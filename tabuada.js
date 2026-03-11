@@ -83,17 +83,15 @@ const atualizarStatus = () => {
 const darDica = () => {
     if (acertos >= 5) {
         acertos -= 5;
-        // build a repeated-addition hint from the current multiplication
+        // repeat the first factor as many times as the second factor
         if (perguntaAtual && perguntaAtual.texto) {
             const parts = perguntaAtual.texto.split(/[×x]/).map(s => s.trim());
             if (parts.length === 2) {
                 const a = parseInt(parts[0], 10);
                 const b = parseInt(parts[1], 10);
                 if (!isNaN(a) && !isNaN(b)) {
-                    // choose the larger factor as the item to repeat for clarity
-                    const times = Math.max(a, b);
-                    const value = times === a ? b : a;
-                    const repeat = Array(times).fill(value).join(' + ');
+                    const times = b;
+                    const repeat = Array(times).fill(a).join(' + ');
                     document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${repeat}`;
                 } else {
                     document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
