@@ -67,7 +67,8 @@ const pontosParaProximaFase = fase => fase * 10;
 
 const prepararPerguntasFase = () => {
     if (faseAtual > fases.length) faseAtual = fases.length;
-    perguntasRestantes = [...fases[faseAtual - 1]];
+    // copy and shuffle questions for the current phase using strong randomness
+    perguntasRestantes = embaralhar([...fases[faseAtual - 1]]);
 };
 
 const sortearPergunta = () => {
