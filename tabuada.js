@@ -90,9 +90,17 @@ const darDica = () => {
                 const a = parseInt(parts[0], 10);
                 const b = parseInt(parts[1], 10);
                 if (!isNaN(a) && !isNaN(b)) {
-                    const times = a;
-                    const repeat = Array(times).fill(b).join(' + ');
-                    document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${repeat}`;
+                    if (a === 1) {
+                        // 1×b: show b + 0
+                        document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${b} + 0`;
+                    } else if (b === 1) {
+                        // a×1: show a + 0 (still inverted logic applies)
+                        document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${a} + 0`;
+                    } else {
+                        const times = a;
+                        const repeat = Array(times).fill(b).join(' + ');
+                        document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${repeat}`;
+                    }
                 } else {
                     document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
                 }
