@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Cache-Control" content="no-transform">
+	<title>ESTUDE BEM</title>
+	<style>
+		/* control panel style */
+		#controls {
+			position: fixed;
+			top: 1rem;
+			right: 1rem;
+			display: flex;
+			gap: 0.6rem;
+			z-index: 1000;
+		}
+		.control-btn {
+			padding: 0.4rem 0.8rem;
+			font-size: 0.9rem;
+			border: none;
+			border-radius: 8px;
+			background: #ffcc00;
+			color: #185a9d;
+			cursor: pointer;
+			box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+			transition: background 0.2s;
+		}
+		.control-btn:hover {
+			background: #ffd633;
+		}
+		/* shop dropdown/menu inside controls */
+		#shop-menu {
+			display: none;
+			flex-direction: column;
+			position: absolute;
+			right: 0;
+			top: 3rem;
+			background: #ffffffee;
+			padding: 0.5rem;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+			gap: 0.4rem;
+			z-index: 1001;
+		}
+		#shop-menu .control-btn {
+			width: 100%;
+		}
+		body {
+			background: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+			font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		main {
+			width: 100%;
+			max-width: 440px;
+			margin: 3rem auto 0 auto;
+			background: #f8fafc;
+			border-radius: 24px;
+			box-shadow: 0 8px 32px rgba(67, 206, 162, 0.13), 0 1.5px 8px rgba(24, 90, 157, 0.08);
+			padding: 2.7rem 2.2rem 2.2rem 2.2rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		h2 {
+			color: #185a9d;
+			text-align: center;
+			font-size: 2.4rem;
+			letter-spacing: 1px;
+			margin-bottom: 1.2rem;
+			font-weight: 700;
+			text-shadow: 0 2px 8px #43cea233;
+		}
+		h2 strong {
+			color: #43cea2;
+			text-shadow: 0 2px 8px #185a9d33;
+		}
+		section {
+			width: 100%;
+			margin-top: 2rem;
+		}
+		h3 {
+			color: #185a9d;
+			text-align: center;
+			font-size: 1.35rem;
+			margin-bottom: 1.2rem;
+			font-weight: 600;
+		}
+		form {
+		flex-direction: column;
+			gap: 1.2rem;
+			max-width: 340px;
+			margin: 0 auto;
+			align-items: center;
+		}
+		label {
+			font-size: 1.25rem;
+			color: #185a9d;
+			font-weight: 500;
+			display: flex;
+			align-items: center;
+			gap: 0.7rem;
+		}
+		#resposta-tabuada {
+			width: 90px;
+			padding: 0.5rem 0.7rem;
+			font-size: 1.2rem;
+			border: 2px solid #43cea2;
+			border-radius: 10px;
+			outline: none;
+			transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+			background: #e6f9f3;
+			color: #185a9d;
+			font-weight: 600;
+			text-align: center;
+		}
+		.input-ok {
+			box-shadow: 0 0 0 2px #43cea2;
+			background: #d0f5ea;
+			border-color: #43cea2;
+		}
+		.input-err {
+			box-shadow: 0 0 0 2px #e74c3c;
+			background: #ffeaea;
+			border-color: #e74c3c;
+		}
+		#resultado-tabuada {
+			font-weight: bold;
+			font-size: 1.15rem;
+			min-height: 1.5em;
+			text-align: center;
+			margin-top: 0.2rem;
+			letter-spacing: 0.5px;
+		}
+		button[type="submit"] {
+			margin-top: 1rem;
+			padding: 0.7rem 1.5rem;
+			background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+			color: #fff;
+			border: none;
+			border-radius: 12px;
+			font-size: 1.15rem;
+			font-weight: 700;
+			cursor: pointer;
+			box-shadow: 0 2px 8px #43cea233;
+			transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+		}
+		button[type="submit"]:hover {
+			background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+			box-shadow: 0 4px 16px #185a9d33;
+			transform: translateY(-2px) scale(1.03);
+		}
+		#score {
+			text-align: center;
+			font-weight: bold;
+			font-size: 1.13rem;
+			margin-top: 0.7rem;
+			color: #185a9d;
+			letter-spacing: 0.5px;
+			background: #e6f9f3;
+			border-radius: 8px;
+			padding: 0.3rem 0.7rem;
+			box-shadow: 0 1px 4px #43cea222;
+			display: inline-block;
+		}
+	</style>
+	<!-- load logic in standalone file (avoid hardcoded netlify URL) -->
+	<script data-cfasync="false" defer src="./tabuada.js"></script>
+
+	<!-- fallback: retry loading script dynamically if nothing defined -->
+	<script>
+	if (typeof embaralhar !== 'function') {
+		console.warn('tabuada.js not yet available, appending retry');
+		const s = document.createElement('script');
+		s.src = './tabuada.js?retry=' + Date.now();
+		document.head.appendChild(s);
+	}
+	</script>
+<body>
+	<noscript>
+		<p style="text-align:center;color:#e74c3c;padding:2rem">Este aplicativo precisa de JavaScript. Ative-o e recarregue a página.</p>
+	</noscript>
+	<!-- control buttons in top-right -->
+	<div id="controls">
+		<!-- main shop button -->
+		<button id="btn-shop" class="control-btn">Loja</button>
+		<!-- hidden shop menu for purchases -->
+		<div id="shop-menu">
+			<button id="btn-dica" class="control-btn">Dica (5 pts)</button>
+			<button id="btn-pular" class="control-btn">Pular fase (10 pts)</button>
+		</div>
+	</div>
+	<main>
+		<h2>Estude bem a <strong>TABUADA</strong>!!!</h2>
+		<!-- <img src="./tabuada.png" alt="Imagem da tabuada" width="650"> -->
+		<section style="margin-top:2.5rem;">
+			<h3 style="color:#ff4e50;text-align:center;">Responda a pergunta:</h3>
+			<form id="form-tabuada" onsubmit="verificarTabuada(event);" style="display:flex;flex-direction:column;gap:1.2rem;max-width:400px;margin:0 auto;">
+				<label style="font-size:1.2rem;">
+					<span id="pergunta-tabuada"></span>
+					<input id="resposta-tabuada" type="number" min="0" style="width:80px;margin-left:0.5rem;">
+				</label>
+				<span id="resultado-tabuada" style="font-weight:bold;font-size:1.1rem;"></span>
+				<button type="submit" style="margin-top:1rem;padding:0.6rem 1.2rem;background:#f9d423;color:#fff;border:none;border-radius:8px;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 6px rgba(255,78,80,0.08);transition:background 0.2s;">Verificar resposta</button>
+				<div id="score" style="text-align:center;font-weight:bold;font-size:1.1rem;margin-top:0.5rem;"></div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>
+	display: flex;
+			
