@@ -83,9 +83,24 @@ const atualizarStatus = () => {
 const darDica = () => {
     if (acertos >= 5) {
         acertos -= 5;
-        // simply reveal the correct result as the "hint" so it's never wrong
-        if (perguntaAtual && typeof perguntaAtual.resposta === 'number') {
-            document.getElementById('resultado-tabuada').textContent = `💡 Dica: a resposta é ${perguntaAtual.resposta}`;
+        // build a repeated-addition hint from the current multiplication
+        if (perguntaAtual && perguntaAtual.texto) {
+            const parts = perguntaAtual.texto.split(/[×x]/).map(s => s.trim());
+            if (parts.length === 2) {
+                const a = parseInt(parts[0], 10);
+                const b = parseInt(parts[1], 10);
+                if (!isNaN(a) && !isNaN(b)) {
+                    // choose the larger factor as the item to repeat for clarity
+                    const times = Math.max(a, b);
+                    const value = times === a ? b : a;
+                    const repeat = Array(times).fill(value).join(' + ');
+                    document.getElementById('resultado-tabuada').textContent = `💡 Dica: ${repeat}`;
+                } else {
+                    document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
+                }
+            } else {
+                document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
+            }
         } else {
             document.getElementById('resultado-tabuada').textContent = '💡 Dica: não disponível';
         }
