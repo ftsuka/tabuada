@@ -1,8 +1,15 @@
 // Modern tabuada game logic
 // phases 1–9 use 1‑digit × 1‑digit questions; from phase 10 onward include 2-digit × 1-digit
+// shuffle using crypto for stronger, non‑predictable randomness
 const embaralhar = arr => {
+    const random = () => {
+        // returns a floating point number in [0,1)
+        const r = new Uint32Array(1);
+        window.crypto.getRandomValues(r);
+        return r[0] / (0xFFFFFFFF + 1);
+    };
     for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
